@@ -3,22 +3,30 @@ import { DB } from './db';
 export class Auth extends DB {
 	Parse: any;
   Bcrypt: any;
+
 	constructor(Parse: any, Bcrypt: any, supabase: any) {
 		super(supabase);
 		this.Parse = Parse;
     this.Bcrypt = Bcrypt;
 	}
 
-	async signUp(userDetails: {
+	public async hashPassword(plaintextPassword: string) {
+		const hash = await this.Bcrypt.hash(plaintextPassword, 10);
+		return hash;
+	}
+
+	public async signUp(userDetails: {
 		username: string;
 		email: string;
 		password: string;
 		name: string;
 	}) {
+		// console.log(userDetails)
 		const result = await this.checkAvailability(
 			userDetails.username,
 			userDetails.email
 		);
+		// console.log(result)
 
 		if (!result) {
 			return false;
@@ -26,6 +34,7 @@ export class Auth extends DB {
 
     const res = await this.newValue({ table: 'Users', values: userDetails })
 
+		console.log(res)
 		if (res) {
 			return true;
 		}
@@ -43,9 +52,9 @@ export class Auth extends DB {
 	// 	return true;
 	// }
 
-	async checkAvailability(username: string, email: string) {
+	public async checkAvailability(username: string, email: string) {
 		const userList = await this.getAllValues('Users')
-
+		console.log(userList)
 		const usernameAvailability = userList.find(
 			(user: any) => user.username === username.toLowerCase()
 		);
@@ -63,12 +72,12 @@ export class Auth extends DB {
 		return true;
 	}
 
-	async comparePassword(plaintextPassword: string, hash: string) {
+	public async comparePassword(plaintextPassword: string, hash: string) {
 		const result = await this.Bcrypt.compare(plaintextPassword, hash);
 		return result;
 	}
 
-	async authenticate(username: string, password: string) {
+	public async authenticate(username: string, password: string) {
 		if (password == undefined) return false;
 
 		const user = await this.getValue({
@@ -84,14 +93,28 @@ export class Auth extends DB {
 		return user.username;
 	}
 
-	checkDate(expiry: any) {
+	public checkDate(expiry: any) {
 		const dateNow = new Date().getTime();
 
 		if (dateNow >= expiry) return false;
 		return true;
 	}
 
-	async checkKey(token: string) {
+	async changeKey(username: string, key: string) {
+		console.log("ufdsxbfgs")
+		const res = await this.updateValue({
+			table: 'Users',
+			valueToChange: key,
+			columnToChange: 'authKey',
+			valueToMatch: username,
+			columnToMatch: 'username'
+		 })
+
+		 if (!res) return false
+		 return true
+	}
+
+	public async checkKey(token: string) {
 		const splitToken = token.split('.');
 		const date = splitToken[0];
 
@@ -107,5 +130,48 @@ export class Auth extends DB {
 
 		if (data.length == 0) return false;
 		return data[0];
+	}
+
+	genetateToken(length?: any, time?: any) {
+		const alphNumString =
+			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+		// 1.5 days
+		const days = time || 129600000;
+		const expire = new Date().getTime() + days;
+		let key = "";
+
+		for (let i = 0; i < (length || 40); i++) {
+			key +=
+				alphNumString[Math.floor(Math.random() * alphNumString.length)];
+		}
+
+		key = `${expire}.${key}`;
+
+		return key;
+	}
+
+	//expires in 2 days
+	generateExpiry() {
+		const date = new Date();
+		const days = 1.5;
+		date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+
+		return date;
+	}
+
+	//every request, change token
+	generateJWT(username) {
+		const data = {
+			username: username,
+			token: this.genetateToken(),
+		};
+
+		return data;
+	}
+
+	generateCookie(key) {
+		const cookie = `key=${key}; path=/; Expires=${this.generateExpiry()}; HostOnly=false; Secure=lax; httpOnly=true; SameSite=Strict;`;
+
+		return cookie;
 	}
 }

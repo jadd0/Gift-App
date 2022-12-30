@@ -5,52 +5,69 @@ export class DB {
 		this.supabase = supabase;
 	}
 
-  async getAllValues(table: string) {
+	async getAllValues(table: string) {
+		const { data, error } = await this.supabase.from(table).select('*');
 
-    const { data, e } = await this.supabase
-			.from(table)
-			.select('*')
-
-		if (data.length == 0) return false;
+		if (error != undefined) return false;
 		return data;
-  }
+	}
 
 	async getValue(config: {
 		table: string;
 		column: string;
 		value: string;
 		amount?: any;
-    returnValues?: any;
+		returnValues?: any;
 	}) {
-    let { table, column, value, amount, returnValues } = config;
+		let { table, column, value, amount, returnValues } = config;
 
-    if (returnValues == undefined) {
-      returnValues = '*';
-    }
+		if (returnValues == undefined) {
+			returnValues = '*';
+		}
 
-    const { data, e } = await this.supabase
+		const { data, e } = await this.supabase
 			.from(table)
 			.select(returnValues)
 			.eq(column, value);
 
 		if (data.length == 0) return false;
 		return data;
-  }
+	}
 
-	async updateValue() {}
+	async updateValue(config: {
+		table: string;
+		valueToChange: string;
+		columnToChange: string;
+		valueToMatch: string;
+		columnToMatch: string;
+	}) {
+		const {
+			table,
+			valueToChange,
+			columnToChange,
+			valueToMatch,
+			columnToMatch,
+		} = config;
+		console.log("jhfksdjbfjs")
+		const { data, error } = await this.supabase
+			.from(table)
+			.update({ [columnToChange]: valueToChange })
+			.match({ [columnToMatch]: valueToMatch });
 
-	async newValue(config: {
-    table: string;
-    values: any;
-  }) {
-    const { table, values } = config;
+		console.log(data, error)
 
-    const { data, error } = await this.supabase.from(table).insert([
-			{
-				values
-			},
-		]);
-  }
+		if (error != undefined) return false;
+		return true;
+	}
+
+	async newValue(config: { table: string; values: any }) {
+		const { table, values } = config;
+
+		const { data, error } = await this.supabase.from(table).insert([values]);
+
+		if (error != undefined) return false
+		return true
+	}
 
 	async deleteValue() {}
 }
