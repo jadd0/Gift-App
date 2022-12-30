@@ -1,4 +1,4 @@
-export class Cookie {
+export class Parse {
   parseCookie(cookieList: any) {
 		const result = {};
 		let jwt = "";

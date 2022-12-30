@@ -1,11 +1,9 @@
-import { HtmlTagHydration } from 'svelte/internal';
 import { DB } from './db';
 
-const supabase = '';
 export class Auth extends DB {
 	Parse: any;
   Bcrypt: any;
-	constructor(Parse: any, Bcrypt: any) {
+	constructor(Parse: any, Bcrypt: any, supabase: any) {
 		super(supabase);
 		this.Parse = Parse;
     this.Bcrypt = Bcrypt;
