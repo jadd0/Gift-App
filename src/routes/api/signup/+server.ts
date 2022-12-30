@@ -14,7 +14,7 @@ export const POST: any = async ({ request }) => {
 		return new Response('User with email/username already exists', {status: 401})
 	}
 	
-	const key = Auth.genetateToken()
+	const key = Auth.Parse.genetateToken()
 	const keyRes = await Auth.changeKey(req.username, key)
 
 	if (!keyRes) {
