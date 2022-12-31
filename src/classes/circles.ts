@@ -11,8 +11,21 @@ export class Circles extends DB {
     if (description == undefined) {
       description = '[Insert description here...]';
     }
+    const uuid: string = this.UUIDCreator()
 
-    const res = await this.newValue({ table: 'Circles', values: { name, description, owner: username } })
+    const createRes = await this.newValue({ table: 'Circles', values: { name, description, owner: username, uuid } })
+    if (!createRes) return false
+
+    const joinRes = await this.joinCircle({ username, uuid })
+    if (!joinRes) return false
+
+    return true
+  }
+
+  async joinCircle(config: { uuid: string, username: string }) {
+    const { uuid, username } = config;
+
+    const res = await this.newValue({ table: 'CircleMembers', values: { username, circleID: uuid } })
 
     if (!res) return false
     return true
