@@ -31,7 +31,7 @@ export class DB {
 			.eq(column, value);
 
 		if (data.length == 0) return false;
-		return data;
+		return data[0];
 	}
 
 	async updateValue(config: {

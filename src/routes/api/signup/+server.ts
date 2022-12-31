@@ -21,7 +21,7 @@ export const POST: any = async ({ request }) => {
 		return new Response("Something has gone wrong server-side. We apologise, please try again later. If this issue continues to occur please contact me at jaddalkwork@gmail.com", { status: 500 });
 	}
 	
-	const cookie = Auth.generateCookie(key);
+	const cookie = Auth.Parse.generateCookie(key);
 	return new Response('Redirect', {
 		status: 200,
 		headers: { 'set-cookie': cookie,

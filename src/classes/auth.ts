@@ -86,6 +86,8 @@ export class Auth extends DB {
       value: username
     });
 
+		console.log(user)
+
     if (!user) return false;
 
 		const res = await this.comparePassword(password, user.password);
@@ -128,7 +130,7 @@ export class Auth extends DB {
       returnValues: 'username'
     })
 
-		if (data.length == 0) return false;
-		return data[0];
+		if (data.length == 0 || data == false) return false;
+		return true;
 	}
 }
