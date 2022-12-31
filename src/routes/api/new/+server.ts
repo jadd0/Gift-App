@@ -1,12 +1,15 @@
-import { user } from '../../../stores'
+import { circles } from '../../../stores'
 import { get } from 'svelte/store';
 
-const User = get(user)
+const Circles = get(circles);
 
 
 export const GET: any = async ({ request }) => {
 	
-  await User.unfollow({username: 'jadd', userToUnfollow: 'john'})
+  await Circles.createCircle({ 
+    username: 'jadd',
+    name: 'Jadd\'s Circle',
+   })
 
 	return new Response('hello');
 }
