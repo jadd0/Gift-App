@@ -2,12 +2,12 @@ import { DB } from './db';
 
 export class Auth extends DB {
 	Parse: any;
-  Bcrypt: any;
+	Bcrypt: any;
 
 	constructor(Parse: any, Bcrypt: any, supabase: any) {
 		super(supabase);
 		this.Parse = Parse;
-    this.Bcrypt = Bcrypt;
+		this.Bcrypt = Bcrypt;
 	}
 
 	public async hashPassword(plaintextPassword: string) {
@@ -32,9 +32,9 @@ export class Auth extends DB {
 			return false;
 		}
 
-    const res = await this.newValue({ table: 'Users', values: userDetails })
+		const res = await this.newValue({ table: 'Users', values: userDetails });
 
-		console.log(res)
+		console.log(res);
 		if (res) {
 			return true;
 		}
@@ -53,8 +53,8 @@ export class Auth extends DB {
 	// }
 
 	public async checkAvailability(username: string, email: string) {
-		const userList = await this.getAllValues('Users')
-		console.log(userList)
+		const userList = await this.getAllValues('Users');
+		console.log(userList);
 		const usernameAvailability = userList.find(
 			(user: any) => user.username === username.toLowerCase()
 		);
@@ -81,14 +81,13 @@ export class Auth extends DB {
 		if (password == undefined) return false;
 
 		const user = await this.getValue({
-      table: 'Users',
-      column: 'username',
-      value: username
-    });
+			table: 'Users',
+			value: { username: username },
+		});
 
-		console.log(user)
+		console.log(user);
 
-    if (!user) return false;
+		if (!user) return false;
 
 		const res = await this.comparePassword(password, user.password);
 		if (!res) return false;
@@ -103,17 +102,17 @@ export class Auth extends DB {
 	}
 
 	async changeKey(username: string, key: string) {
-		console.log("ufdsxbfgs")
+		console.log('ufdsxbfgs');
 		const res = await this.updateValue({
 			table: 'Users',
 			valueToChange: key,
 			columnToChange: 'authKey',
 			valueToMatch: username,
-			columnToMatch: 'username'
-		 })
+			columnToMatch: 'username',
+		});
 
-		 if (!res) return false
-		 return true
+		if (!res) return false;
+		return true;
 	}
 
 	public async checkKey(token: string) {
@@ -123,12 +122,11 @@ export class Auth extends DB {
 		const res = this.checkDate(date);
 		if (!res) return false;
 
-    const data = await this.getValue({
-      table: 'Users',
-      column: 'authKey',
-      value: token,
-      returnValues: 'username'
-    })
+		const data = await this.getValue({
+			table: 'Users',
+			value: { 'authKey': token },
+			returnValues: 'username',
+		});
 
 		if (data.length == 0 || data == false) return false;
 		return true;
