@@ -1,12 +1,21 @@
 import { DB } from "./db";
-const supabase = ''
+
 export class Circles extends DB {
-  constructor() {
+  constructor(supabase: any) {
     super(supabase)
   }
 
-  async createCircle() {
+  async createCircle(config: { name: string, description?: string, username: string}) {
+    let { name, description, username } = config;
+    
+    if (description == undefined) {
+      description = '[Insert description here...]';
+    }
 
+    const res = await this.newValue({ table: 'Circles', values: { name, description, owner: username } })
+
+    if (!res) return false
+    return true
   }
 
   async deleteCircle() {
