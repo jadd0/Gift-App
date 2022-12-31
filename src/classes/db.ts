@@ -1,3 +1,5 @@
+import { time_ranges_to_array } from "svelte/internal";
+
 export class DB {
 	supabase: any;
 
@@ -14,22 +16,24 @@ export class DB {
 
 	async getValue(config: {
 		table: string;
-		column: string;
-		value: string;
+		value: any;
 		amount?: any;
 		returnValues?: any;
 	}) {
-		let { table, column, value, amount, returnValues } = config;
+		let { table, value, amount, returnValues } = config;
 
 		if (returnValues == undefined) {
 			returnValues = '*';
 		}
 
-		const { data, e } = await this.supabase
+		console.log(value)
+
+		const { data, error } = await this.supabase
 			.from(table)
 			.select(returnValues)
-			.eq(column, value);
+			.match(value);
 
+			console.log({data, error})
 		if (data.length == 0) return false;
 		return data[0];
 	}
@@ -48,7 +52,7 @@ export class DB {
 			valueToMatch,
 			columnToMatch,
 		} = config;
-		console.log("jhfksdjbfjs")
+
 		const { data, error } = await this.supabase
 			.from(table)
 			.update({ [columnToChange]: valueToChange })
@@ -69,5 +73,15 @@ export class DB {
 		return true
 	}
 
-	async deleteValue() {}
+	async deleteValue(config: { table: string; values: any }) {
+		const { table, values } = config;
+		console.log(values)
+		const { data, error } = await this.supabase
+			.from(table)
+			.delete()
+			.match(values);
+		console.log({data, error})
+		if (error != undefined) return true
+		return false
+	}
 }
