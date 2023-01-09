@@ -1,7 +1,7 @@
-import { circles } from '../../../stores'
+import { circlesClass } from '../../../stores'
 import { get } from 'svelte/store';
 
-const Circles = get(circles);
+const Circles = get(circlesClass);
 
 
 export const GET: any = async ({ request }) => {

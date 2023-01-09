@@ -20,13 +20,13 @@ export class Auth extends DB {
 		email: string;
 		password: string;
 		name: string;
+		uuid: string;
 	}) {
-		// console.log(userDetails)
+
 		const result = await this.checkAvailability(
 			userDetails.username,
 			userDetails.email
 		);
-		// console.log(result)
 
 		if (!result) {
 			return false;
@@ -42,15 +42,6 @@ export class Auth extends DB {
 		return false;
 	}
 
-	// async logout(username) {
-	// 	const { data, error } = await this.supabase
-	// 		.from('users')
-	// 		.update({ key: '' })
-	// 		.match({ username: username });
-
-	// 	if (error != undefined) return false;
-	// 	return true;
-	// }
 
 	public async checkAvailability(username: string, email: string) {
 		const userList = await this.getAllValues('Users');
@@ -125,10 +116,10 @@ export class Auth extends DB {
 		const data = await this.getValue({
 			table: 'Users',
 			value: { 'authKey': token },
-			returnValues: 'username',
+			returnValues: 'username, uuid, name',
 		});
 
 		if (data.length == 0 || data == false) return false;
-		return true;
+		return data;
 	}
 }

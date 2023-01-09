@@ -11,7 +11,7 @@ export class Circles extends DB {
     if (description == undefined) {
       description = '[Insert description here...]';
     }
-    const uuid: string = this.UUIDCreator()
+    const uuid: string = this.generateUUID()
 
     const createRes = await this.newValue({ table: 'Circles', values: { name, description, owner: username, uuid } })
     if (!createRes) return false

@@ -7,9 +7,10 @@ const Auth = get(auth)
 export const POST: any = async ({ request }) => {
 	const req = await request.json();
 	req.password = await Auth.hashPassword(req.password);
+	req.uuid = DB.generateUUID();
 
 	const res = await Auth.signUp(req)
-	console.log(res)
+
 	if (!res) {
 		return new Response('User with email/username already exists', {status: 401})
 	}
