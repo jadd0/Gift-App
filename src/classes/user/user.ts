@@ -1,4 +1,4 @@
-import { DB } from './db';
+import { DB } from '../db';
 
 export class User extends DB {
 	constructor(supabase: any) {

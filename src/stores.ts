@@ -5,9 +5,9 @@ import { supabase } from './supabaseClient';
 import bcryptjs from 'bcryptjs';
 
 import { DB } from './classes/db';
-import { Auth } from './classes/auth';
+import { Auth } from './classes/user/auth';
 import { Parse } from './classes/parse';
-import { User } from './classes/user';
+import { User } from './classes/user/user';
 import { Circles } from './classes/circles';
 
 // INIT
