@@ -1,20 +1,14 @@
 <script lang="ts">
 	import Nav from '../__nav/+page.svelte';
-	import Auth from '../__auth/+page.svelte';
+
 </script>
 
 
-<svelte:head>
-	<title>Login</title>
-</svelte:head>
 
-<Auth let:user>
-    <body>
-  <Nav />
-
+<body>
+	<Nav />
 </body>
 
-</Auth>
 
 <style>
 	@import '/styles.css';

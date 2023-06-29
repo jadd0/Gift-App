@@ -1,298 +1,372 @@
-<script>
+<script lang="ts">
+	let sidebar: any;
+	let closeBtn: any;
+	let searchBtn: any;
 
+	let sidebarOpen: boolean = false
+
+
+	function closeClick() {
+		sidebar.classList.toggle('open');
+		menuBtnChange(); //calling the function(optional)
+	}
+
+	function searchClick() {
+		sidebar.classList.toggle('open');
+		menuBtnChange(); //calling the function(optional)
+	}
+	// following are the code to change sidebar button(optional)
+	function menuBtnChange() {
+		if (sidebar.classList.contains('open')) {
+			closeBtn.classList.replace('bx-menu', 'bx-menu-alt-right'); //replacing the iocns class
+		} else {
+			closeBtn.classList.replace('bx-menu-alt-right', 'bx-menu'); //replacing the iocns class
+		}
+	}
 </script>
 
-<div id="navbar">
-	
+<body>
+<div class="sidebar {sidebarOpen ? 'open' : ''}" bind:this={sidebar}>
+	<div class="logo-details">
+		<i class="bx bxl-c-plus-plus icon" />
+		<div class="logo_name">CodingLab</div>
+		<i class="bx bx-menu" id="btn" bind:this={closeBtn} on:click={closeClick} />
+	</div>
+	<ul class="nav-list">
+		<li>
+			<i class="bx bx-search" bind:this={searchBtn} on:click={searchClick} />
+			<input type="text" placeholder="Search..." />
+			<span class="tooltip">Search</span>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bx bx-grid-alt" />
+				<span class="links_name">Dashboard</span>
+			</a>
+			<span class="tooltip">Dashboard</span>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bx bx-user" />
+				<span class="links_name">User</span>
+			</a>
+			<span class="tooltip">User</span>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bx bx-chat" />
+				<span class="links_name">Messages</span>
+			</a>
+			<span class="tooltip">Messages</span>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bx bx-pie-chart-alt-2" />
+				<span class="links_name">Analytics</span>
+			</a>
+			<span class="tooltip">Analytics</span>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bx bx-folder" />
+				<span class="links_name">File Manager</span>
+			</a>
+			<span class="tooltip">Files</span>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bx bx-cart-alt" />
+				<span class="links_name">Order</span>
+			</a>
+			<span class="tooltip">Order</span>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bx bx-heart" />
+				<span class="links_name">Saved</span>
+			</a>
+			<span class="tooltip">Saved</span>
+		</li>
+		<li>
+			<a href="#">
+				<i class="bx bx-cog" />
+				<span class="links_name">Setting</span>
+			</a>
+			<span class="tooltip">Setting</span>
+		</li>
+		<li class="profile">
+			<div class="profile-details">
+				<!--<img src="profile.jpg" alt="profileImg">-->
+				<div class="name_job">
+					<div class="name">Prem Shahi</div>
+					<div class="job">Web designer</div>
+				</div>
+			</div>
+			<i class="bx bx-log-out" id="log_out" />
+		</li>
+	</ul>
 </div>
-<div id="underNav" />
-<div id="space" />
-
-
-
-<!-- <div id="navbarMobile">
-	<section class="p-menu1">
-		<nav id="navbarMobileNav" class="navigation" role="navigation">
-			<input id="toggle1" type="checkbox" />
-			<label class="hamburger1" for="toggle1">
-				<div class="top" />
-				<div class="meat" />
-				<div class="bottom" />
-			</label>
-			{#if username == undefined}
-				<nav class="menu1">
-					<a href="/">Home</a>
-					<a href="/login">Login</a>
-				</nav>
-			{/if}
-			{#if username != undefined}
-				<nav class="menu2">
-					<a href="/">Home</a>
-					<a href="/@{username}">@{username}</a>
-					<a href="/newpost">New Post</a>
-					<a href="/search">Search</a>
-					<a on:click={logout} style="cursor:pointer">Logout</a>
-				</nav>
-			{/if}
-		</nav>
-	</section>
-</div> -->
-
-<!-- <div id="navbarMobile">
-	{#if username != undefined}
-		<a href="/">
-			<div class="nav1 home" id="home">
-				<img src={homeSrc} alt="" class="icon home" />
-			</div>
-		</a>
-		<a href="/search">
-			<div class="nav1 search" id="search">
-				<img src={searchSrc} alt="" class="icon search" />
-			</div>
-		</a>
-		<a href="/newpost">
-			<div class="nav1 newpost" id="newpost">
-				<img src={newSrc} alt="" class="icon new" />
-			</div>
-		</a>
-
-		<a href="/@{username}">
-			<div class="nav1 user" id="user">
-				<img src={userSrc} alt="" class="icon user" />
-			</div>
-		</a>
-		{:else}
-		<div id="loginSignupHolder">
-			<a href="/login">
-			<div class="nav1 login" id="login">
-				<h2>Login</h2>
-			</div>
-		</a>
-		<a href="/signup">
-			<div class="nav1 signup" id="signup">
-				<h2>Signup</h2>
-			</div>
-		</a>
-		</div>
-		
-	{/if}
-</div> -->
+</body>
 
 <style>
+	@import 'https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css';
+
 	@font-face {
-		font-family: "Jakarta";
-		src: url("/fonts/Jakarta.ttf");
+		font-family: 'Jakarta';
+		src: url('/fonts/Jakarta.ttf');
 	}
 
 	* {
-		font-size: 24px;
-		text-align: center;
-		color: black;
 		margin: 0;
 		padding: 0;
-		border: 0;
-		outline: 0;
 		box-sizing: border-box;
-		font-family: "Jakarta";
-		letter-spacing: -0px !important;
-		font-weight: 600;
+		font-family: 'Jakarta';
 	}
 
 	a {
 		text-decoration: none;
 	}
 
-	#loginSignupHolder {
-		height: 80%;
-		width: 100vw;
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: center;
-		gap: 30px;
+	.sidebar {
+		position: fixed;
+		left: 0;
+		top: 0;
+		height: 100%;
+		width: 78px;
+		background: #11101d;
+		padding: 6px 14px;
+		z-index: 99;
+		transition: all 0.5s ease;
 	}
-
-	h2 {
-		color: white;
-		font-size: 30px;
+	.sidebar.open {
+		width: 250px;
 	}
-
-	#space {
+	.sidebar .logo-details {
 		height: 60px;
-		width: 100vw;
+		display: flex;
+		align-items: center;
+		position: relative;
+	}
+	.sidebar .logo-details .icon {
+		opacity: 0;
+		transition: all 0.5s ease;
+	}
+	.sidebar .logo-details .logo_name {
+		color: #fff;
+		font-size: 20px;
+		font-weight: 600;
+		opacity: 0;
+		transition: all 0.5s ease;
+	}
+	.sidebar.open .logo-details .icon,
+	.sidebar.open .logo-details .logo_name {
+		opacity: 1;
+	}
+	.sidebar .logo-details #btn {
+		position: absolute;
+		top: 50%;
+		right: 0;
+		transform: translateY(-50%);
+		font-size: 22px;
+		transition: all 0.4s ease;
+		font-size: 23px;
+		text-align: center;
+		cursor: pointer;
+		transition: all 0.5s ease;
+	}
+	.sidebar.open .logo-details #btn {
+		text-align: right;
+	}
+	.sidebar i {
+		color: #fff;
+		height: 60px;
+		min-width: 50px;
+		font-size: 28px;
+		text-align: center;
+		line-height: 60px;
+	}
+	.sidebar .nav-list {
+		margin-top: 20px;
+		height: 100%;
+	}
+	.sidebar li {
+		position: relative;
+		margin: 8px 0;
+		list-style: none;
+	}
+	.sidebar li .tooltip {
+		position: absolute;
+		top: -20px;
+		left: calc(100% + 15px);
+		z-index: 3;
+		background: #fff;
+		box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+		padding: 6px 12px;
+		border-radius: 4px;
+		font-size: 15px;
+		font-weight: 400;
+		opacity: 0;
+		white-space: nowrap;
+		pointer-events: none;
+		transition: 0s;
+	}
+	.sidebar li:hover .tooltip {
+		opacity: 1;
+		pointer-events: auto;
+		transition: all 0.4s ease;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	.sidebar.open li .tooltip {
+		display: none;
+	}
+	.sidebar input {
+		font-size: 15px;
+		color: #fff;
+		font-weight: 400;
+		outline: none;
+		height: 50px;
+		width: 100%;
+		width: 50px;
+		border: none;
+		border-radius: 12px;
+		transition: all 0.5s ease;
+		background: #1d1b31;
+	}
+	.sidebar.open input {
+		padding: 0 20px 0 50px;
+		width: 100%;
+	}
+	.sidebar .bx-search {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		transform: translateY(-50%);
+		font-size: 22px;
+		background: #1d1b31;
+		color: #fff;
+	}
+	.sidebar.open .bx-search:hover {
+		background: #1d1b31;
+		color: #fff;
+	}
+	.sidebar .bx-search:hover {
+		background: #fff;
+		color: #11101d;
+	}
+	.sidebar li a {
+		display: flex;
+		height: 100%;
+		width: 100%;
+		border-radius: 12px;
+		align-items: center;
+		text-decoration: none;
+		transition: all 0.4s ease;
+		background: #11101d;
+	}
+	.sidebar li a:hover {
+		background: #fff;
+	}
+	.sidebar li a .links_name {
+		color: #fff;
+		font-size: 15px;
+		font-weight: 400;
+		white-space: nowrap;
+		opacity: 0;
+		pointer-events: none;
+		transition: 0.4s;
+	}
+	.sidebar.open li a .links_name {
+		opacity: 1;
+		pointer-events: auto;
+	}
+	.sidebar li a:hover .links_name,
+	.sidebar li a:hover i {
+		transition: all 0.5s ease;
+		color: #11101d;
+	}
+	.sidebar li i {
+		height: 50px;
+		line-height: 50px;
+		font-size: 18px;
+		border-radius: 12px;
+	}
+	.sidebar li.profile {
+		position: fixed;
+		height: 60px;
+		width: 78px;
+		left: 0;
+		bottom: -8px;
+		padding: 10px 14px;
+		background: #1d1b31;
+		transition: all 0.5s ease;
+		overflow: hidden;
+	}
+	.sidebar.open li.profile {
+		width: 250px;
+	}
+	.sidebar li .profile-details {
+		display: flex;
+		align-items: center;
+		flex-wrap: nowrap;
+	}
+	.sidebar li img {
+		height: 45px;
+		width: 45px;
+		object-fit: cover;
+		border-radius: 6px;
+		margin-right: 10px;
+	}
+	.sidebar li.profile .name,
+	.sidebar li.profile .job {
+		font-size: 15px;
+		font-weight: 400;
+		color: #fff;
+		white-space: nowrap;
+	}
+	.sidebar li.profile .job {
+		font-size: 12px;
+	}
+	.sidebar .profile #log_out {
+		position: absolute;
+		top: 50%;
+		right: 0;
+		transform: translateY(-50%);
+		background: #1d1b31;
+		width: 100%;
+		height: 60px;
+		line-height: 60px;
+		border-radius: 0px;
+		transition: all 0.5s ease;
+	}
+	.sidebar.open .profile #log_out {
+		width: 50px;
 		background: none;
 	}
-
-	@media (min-width: 900px) {
-		#navbarMobile {
-			display: none !important;
-		}
+	.home-section {
+		position: relative;
+		background: #e4e9f7;
+		min-height: 100vh;
+		top: 0;
+		left: 78px;
+		width: calc(100% - 78px);
+		transition: all 0.5s ease;
+		z-index: 2;
 	}
-	@media (max-width: 900px) {
-		#navbar,
-		#underNav,
-		#space {
+	.sidebar.open ~ .home-section {
+		left: 250px;
+		width: calc(100% - 250px);
+	}
+	.home-section .text {
+		display: inline-block;
+		color: #11101d;
+		font-size: 25px;
+		font-weight: 500;
+		margin: 18px;
+	}
+	@media (max-width: 420px) {
+		.sidebar li .tooltip {
 			display: none;
 		}
 	}
-
-	#navbar {
-		width: 100vw;
-		height: 60px;
-		padding: 0;
-		background-color: #141414;
-		position: fixed;
-		top: 0;
-		transition: all 0.4s 0.1s ease-in-out;
-		z-index: 200;
-		overflow-x: hidden;
-		opacity: 0.9;
-		/* padding-bottom: 60px; */
-		/* padding-bottom: 80px; */
-	}
-
-	#underNav {
-		position: fixed;
-		top: 0;
-		width: 100vw;
-		height: 60px;
-		z-index: 150;
-		/* background-color: white; */
-		/* margin-top: -60px; */
-		backdrop-filter: blur(17px);
-	}
-
-	#navbar div {
-		/* min-width: 10%; */
-		padding: 0 30px 0 0px;
-		height: 100%;
-		margin: 0 auto;
-		text-align: center;
-		vertical-align: middle;
-		line-height: 60px;
-		color: white;
-		float: right;
-	}
-
-	#home {
-		transition: all 0.5s ease-in-out;
-	}
-
-	#home:hover {
-		color: #00dbdb;
-	}
-
-	#navbarMobile {
-		width: 100vw;
-		height: 85px;
-		position: fixed;
-		/* top:90vh; */
-		bottom: 0;
-		background: #141414;
-		z-index: 400;
-		border-top: 1px solid #585858;
-		display: flex;
-		/* padding-top: 30px; */
-	}
-
-	.nav1 {
-		width: 25vw;
-		height: 70%;
-		margin-top: 0px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		/* background: blue; */
-	}
-
-	.icon {
-		width: 5.75vw;
-		max-width: 30px;
-		/* position: */
-	}
-
-	/* 
-	.hamburger1 {
-		height: 45px;
-		margin: 10px;
-		display: -ms-grid;
-		display: grid;
-		grid-template-rows: repeat(3, 1fr);
-		justify-items: center;
-		z-index: 120;
-	}
-
-	.hamburger1 div {
-		background-color: rgb(255, 255, 255);
-		position: relative;
-		width: 40px;
-		height: 5px;
-		margin-top: 7px;
-		-webkit-transition: all 0.2s ease-in-out;
-		transition: all 0.2s ease-in-out;
-	}
-
-	#toggle1 {
-		display: none;
-	}
-
-	#toggle1:checked + .hamburger1 .top {
-		-webkit-transform: rotate(-45deg);
-		transform: rotate(-45deg);
-		margin-top: 22.5px;
-	}
-
-	#toggle1:checked + .hamburger1 .meat {
-		-webkit-transform: rotate(45deg);
-		transform: rotate(45deg);
-		margin-top: -5px;
-	}
-
-	#toggle1:checked + .hamburger1 .bottom {
-		-webkit-transform: scale(0);
-		transform: scale(0);
-	}
-
-	#toggle1:checked ~ .menu1 {
-		min-height: 100px;
-		overflow: hidden;
-	}
-
-	#toggle1:checked ~ .menu2 {
-		min-height: 265px;
-		overflow: hidden;
-	}
-
-	.menu1,
-	.menu2 {
-		width: 100%;
-		margin: 0;
-		display: -ms-grid;
-		display: grid;
-		grid-template-rows: 1fr repeat(8, 0.5fr);
-		grid-row-gap: 25px;
-		padding: 0;
-		list-style: none;
-		clear: both;
-		width: auto;
-		text-align: center;
-		height: 0px;
-		overflow: auto;
-		transition: height 0.4s ease;
-		z-index: 120;
-		-webkit-transition: all 0.3s ease;
-		transition: all 0.3s ease;
-	}
-
-	.menu1 a:first-child,
-	.menu2 a:first-child {
-		margin-top: 10px;
-	}
-
-	.menu1 a,
-	.menu2 a {
-		color: white;
-		font-weight: bold;
-		text-decoration: none;
-	} */
 </style>

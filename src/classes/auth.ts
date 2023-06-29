@@ -10,6 +10,11 @@ export class Auth extends DB {
 		this.Bcrypt = Bcrypt;
 	}
 
+	public async comparePassword(plaintextPassword: string, hash: string): Promise<string> {
+		const result = await this.Bcrypt.compare(plaintextPassword, hash);
+		return result;
+	}
+
 	public async hashPassword(plaintextPassword: string) {
 		const hash = await this.Bcrypt.hash(plaintextPassword, 10);
 		return hash;
@@ -20,21 +25,18 @@ export class Auth extends DB {
 		email: string;
 		password: string;
 		name: string;
-		uuid: string;
-	}) {
-
-		const result = await this.checkAvailability(
-			userDetails.username,
-			userDetails.email
-		);
+	}, accessKey: string) {
+		const result = await this.checkAvailability(userDetails.username, userDetails.email);
 
 		if (!result) {
 			return false;
 		}
 
-		const res = await this.newValue({ table: 'Users', values: userDetails });
+		const res = await this.newValue({ table: 'Users', values: {
+			...userDetails,
+			accessKey
+		} });
 
-		console.log(res);
 		if (res) {
 			return true;
 		}
@@ -42,17 +44,14 @@ export class Auth extends DB {
 		return false;
 	}
 
-
-	public async checkAvailability(username: string, email: string) {
+	public async checkAvailability(username: string, email: string): Promise<boolean> {
 		const userList = await this.getAllValues('Users');
-		console.log(userList);
+		userList;
 		const usernameAvailability = userList.find(
 			(user: any) => user.username === username.toLowerCase()
 		);
 
-		const emailAvailability = userList.find(
-			(user: any) => user.email === email.toLowerCase()
-		);
+		const emailAvailability = userList.find((user: any) => user.email === email.toLowerCase());
 
 		//true if undefined, false otherwise
 		const userBool = usernameAvailability == undefined;
@@ -63,26 +62,33 @@ export class Auth extends DB {
 		return true;
 	}
 
-	public async comparePassword(plaintextPassword: string, hash: string) {
-		const result = await this.Bcrypt.compare(plaintextPassword, hash);
-		return result;
-	}
-
 	public async authenticate(username: string, password: string) {
 		if (password == undefined) return false;
 
 		const user = await this.getValue({
 			table: 'Users',
-			value: { username: username },
+			value: { username: username }
 		});
-
-		console.log(user);
 
 		if (!user) return false;
 
 		const res = await this.comparePassword(password, user.password);
 		if (!res) return false;
-		return user.username;
+
+		if (user.accessKey == null) {
+			const randomString = await this.Parse.generateRandomString(70);
+			const res = await this.updateValue({
+				table: 'Users',
+				columnToMatch: 'username',
+				valueToMatch: username,
+				columnToChange: 'accessKey',
+				valueToChange: randomString
+			});
+
+			if (!res) return false
+			return user.accessKey
+		}
+		return user.accessKey;
 	}
 
 	public checkDate(expiry: any) {
@@ -92,18 +98,39 @@ export class Auth extends DB {
 		return true;
 	}
 
-	async changeKey(username: string, key: string) {
-		console.log('ufdsxbfgs');
-		const res = await this.updateValue({
+	async changeKey(username: string, key: string, type: string) {
+		const { data, error } = await this.supabase
+			.from('Keys')
+			.update({ 'key': key })
+			.match({ 'type': type, 'username': username })
+			.select()
+
+		if (error != undefined || data.length === 0) {
+			const res = await this.newValue({
+				table: 'Keys',
+				values: {
+					key,
+					username,
+					type
+				}
+			});
+
+			if (!res) return false;
+			return res.key;
+		}
+		
+		return data[0].key;
+	}
+
+	public async checkAccessKey(token: string) {
+		const data = await this.getValue({
 			table: 'Users',
-			valueToChange: key,
-			columnToChange: 'authKey',
-			valueToMatch: username,
-			columnToMatch: 'username',
+			value: { accessKey: token },
+			returnValues: 'username, uuid, name'
 		});
 
-		if (!res) return false;
-		return true;
+		if (data.length == 0 || data == false) return false;
+		return data;
 	}
 
 	public async checkKey(token: string) {
@@ -114,12 +141,27 @@ export class Auth extends DB {
 		if (!res) return false;
 
 		const data = await this.getValue({
-			table: 'Users',
-			value: { 'authKey': token },
-			returnValues: 'username, uuid, name',
+			table: 'Keys',
+			value: { key: token }
 		});
+
 
 		if (data.length == 0 || data == false) return false;
 		return data;
+	}
+
+	async checkEmail(username: string, email: string): Promise<boolean|string> {
+		const user = await this.getValue({
+			table: 'Users',
+			value: {
+				username
+			}
+		})
+		if (!user) return false
+
+		const res = await this.comparePassword(email, user.email)
+		const res2 = user.email == email
+		if (res || res2) return user
+		return false
 	}
 }
