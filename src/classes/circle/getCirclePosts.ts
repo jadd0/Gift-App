@@ -1,6 +1,6 @@
 import { Circle } from './circle'
 
-export class DeleteCircle extends Circle {
+export class GetCirclePosts extends Circle {
   constructor(supabase: any) {
     super(supabase)
   }

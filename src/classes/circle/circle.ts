@@ -35,7 +35,7 @@ export class Circle extends DB {
 		return false;
 	}
 
-  async getUserCircles(userUUID: UUID): Promise<[CircleType]|[]> {
+  async getUserCircles(userUUID: UUID): Promise<CircleType[]|[]> {
     const res = await this.getValue({
       table: 'Circles',
       value: {
@@ -47,3 +47,5 @@ export class Circle extends DB {
     return res
   }
 }
+
+// TODO: make so see if you have requested
