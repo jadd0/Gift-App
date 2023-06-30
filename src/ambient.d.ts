@@ -11,3 +11,14 @@ type CircleType = {
   description: string,
   private: boolean
 }
+
+type Post = {
+  id: number,
+  uuid: UUID,
+  created_at: any,
+  url: string,
+  circleUUID: UUID,
+  userUUID: UUID,
+  description: string,
+  title: string,
+}
