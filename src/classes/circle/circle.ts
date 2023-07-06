@@ -28,14 +28,26 @@ export class Circle extends DB {
 
 		if (!circle) return false;
 
-		if (!circle.private) return circle;
+		const request = await this.getValue({
+      table: 'MemberRequests',
+      value: {
+        circleUUID: uuid,
+				userUUID
+      }
+    })
+
+		if (!circle.private) return {
+			...circle,
+			requested: request ? true : false
+		};
     
     if (await this.getMember(uuid, userUUID)) return circle;
 
 		return false;
 	}
 
-  async getUserCircles(userUUID: UUID): Promise<CircleType[]|[]> {
+  async getUserCircles(userUUID: UUID, checkingUserUUID: UUID): Promise<CircleType[]|[]> {
+		// TODO: check if private
     const res = await this.getValue({
       table: 'Circles',
       value: {
@@ -46,6 +58,18 @@ export class Circle extends DB {
     if (!res) return []
     return res
   }
-}
 
-// TODO: make so see if you have requested
+	async getMembers(circleUUID: UUID, userUUID: UUID): Promise<false|string[]> {
+		const res = await this.getCircle(circleUUID, userUUID)
+		if (!res) return false
+
+		const members = await this.getValue({
+			table: 'CircleMembers',
+			value: {
+				circleUUID
+			}
+		})
+
+		return members
+	}
+}

@@ -101,7 +101,7 @@ export class DB {
 		const { table, values } = config;
 
 		const { data, error } = await this.supabase.from(table).insert([values]).select();
-
+		
 		if (error != undefined) return false
 		return data
 	}

@@ -12,6 +12,7 @@ export class Auth extends DB {
 
 	public async comparePassword(plaintextPassword: string, hash: string): Promise<string> {
 		const result = await this.Bcrypt.compare(plaintextPassword, hash);
+		
 		return result;
 	}
 
@@ -37,11 +38,9 @@ export class Auth extends DB {
 			accessKey
 		} });
 
-		if (res) {
-			return true;
-		}
+		if (!res) return false
 
-		return false;
+		return res[0];
 	}
 
 	public async checkAvailability(username: string, email: string): Promise<boolean> {
@@ -73,6 +72,7 @@ export class Auth extends DB {
 		if (!user) return false;
 
 		const res = await this.comparePassword(password, user.password);
+		
 		if (!res) return false;
 
 		if (user.accessKey == null) {
@@ -98,11 +98,11 @@ export class Auth extends DB {
 		return true;
 	}
 
-	async changeKey(username: string, key: string, type: string) {
+	async changeKey(userUUID: string, key: string, type: string) {
 		const { data, error } = await this.supabase
 			.from('Keys')
 			.update({ 'key': key })
-			.match({ 'type': type, 'username': username })
+			.match({ 'type': type, 'userUUID': userUUID })
 			.select()
 
 		if (error != undefined || data.length === 0) {
@@ -110,13 +110,13 @@ export class Auth extends DB {
 				table: 'Keys',
 				values: {
 					key,
-					username,
+					userUUID,
 					type
 				}
 			});
 
 			if (!res) return false;
-			return res.key;
+			return res[0].key;
 		}
 		
 		return data[0].key;

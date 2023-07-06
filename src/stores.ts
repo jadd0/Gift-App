@@ -8,21 +8,65 @@ import { DB } from './classes/db';
 import { Auth } from './classes/user/auth';
 import { Parse } from './classes/parse';
 import { User } from './classes/user/user';
-import { Circles } from './classes/circles';
+
+import { Circle } from './classes/circle/circle';
+import { AddPostToCircle } from './classes/circle/addPostToCircle';
+import { DeleteCircle } from './classes/circle/deleteCircle';
+import { GetCirclePosts } from './classes/circle/getCirclePosts';
+import { MakeCircle } from './classes/circle/makeCircle';
+import { Moderator } from './classes/circle/member/moderator';
+import { NewMember } from './classes/circle/member/newMember';
+import { RemoveMember } from './classes/circle/member/removeMember';
+
+import { Post } from './classes/post/post';
+import { DeletePost } from './classes/post/deletePost';
+import { DislikePost } from './classes/post/likeDislike/dislikePost';
+import { LikePost } from './classes/post/likeDislike/likePost';
+import { Comment } from './classes/post/commentReply/commentReply';
+// import { Dis } from './classes/post/likeDislike/dislikePost';
+
 
 // INIT
 
 const dbObj = new DB(supabase);
 const authObj = new Auth(new Parse(), bcryptjs, supabase);
 const userObj = new User(supabase);
-const circlesObj = new Circles(supabase);
+
+const circleObj = new Circle(supabase)
+const addPostToCircleObj = new AddPostToCircle(supabase)
+const deleteCircleObj = new DeleteCircle(supabase)
+const getCirclePostsObj = new GetCirclePosts(supabase)
+const makeCircleObj = new MakeCircle(supabase)
+const moderatorObj = new Moderator(supabase)
+const newMemberObj = new NewMember(supabase)
+const removeMemberObj = new RemoveMember(supabase)
+
+const postObj = new Post(supabase)
+const deletePostObj = new DeletePost(supabase)
+const dislikePostObj = new DislikePost(supabase)
+const likePostObj = new LikePost(supabase)
+const commentObj = new Comment(supabase)
 
 // OBJECTS
 
 export const db = writable(dbObj);
 export const auth = writable(authObj);
 export const user = writable(userObj);
-export const circlesClass = writable(circlesObj);
+
+export const circle = writable(circleObj)
+export const addPostToCircle = writable(addPostToCircleObj)
+export const deleteCircle = writable(deleteCircleObj)
+export const getCirclePosts = writable(getCirclePostsObj)
+export const makeCircle = writable(makeCircleObj)
+export const moderator = writable(moderatorObj)
+export const newMember = writable(newMemberObj)
+export const removeMember = writable(removeMemberObj)
+
+export const post = writable(postObj)
+export const deletePost = writable(deletePostObj)
+export const dislikePost = writable(dislikePostObj)
+export const likePost = writable(likePostObj)
+export const comment = writable(commentObj)
 
 // ARRAYS
 
@@ -112,7 +156,7 @@ export const circlesClass = writable(circlesObj);
 // // 		'postgres_changes',
 // // 		{ event: 'INSERT', schema: '*', table: '*' },
 // // 		(payload) => {
-// // 			console.log(payload, '1')
+// // 			
 // // 			// let localUsers = get(users);
 // // 			// const userIndex = localUsers.findIndex(
 // // 			// 	(user: any) => user.uuid === payload.new.uuid
@@ -135,7 +179,7 @@ export const circlesClass = writable(circlesObj);
 // // 		'postgres_changes',
 // // 		{ event: 'UPDATE', schema: '*', table: '*' },
 // // 		(payload) => {
-// // 			console.log(payload, '2')
+// // 			
 // // 		}
 // // 	)
 // // 	.subscribe();
@@ -146,7 +190,7 @@ export const circlesClass = writable(circlesObj);
 // // 		'postgres_changes',
 // // 		{ event: 'DELETE', schema: '*', table: '*' },
 // // 		(payload) => {
-// // 			console.log(payload, '3')
+// // 			
 // // 		}
 // // 	)
 // // 	.subscribe();

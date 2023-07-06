@@ -6,7 +6,7 @@ export class AddPostToCircle extends Circle {
     super(supabase)
   }
 
-  private async pushToCircle(circleUUID: UUID, userUUID: UUID, post: Post): Promise<false|Post> {
+  private async pushToCircle(circleUUID: UUID, userUUID: UUID, post: PostType): Promise<false|PostType> {
     const res = await this.newValue({
       table: 'Posts',
       values: {
@@ -18,7 +18,7 @@ export class AddPostToCircle extends Circle {
     return res
   }
 
-  async add(circleUUID: UUID, userUUID: UUID, post: Post): Promise<false|Post> {
+  async add(circleUUID: UUID, userUUID: UUID, post: PostType): Promise<false|PostType> {
     const member = await this.getMember(circleUUID, userUUID)
     if (!member) return false
 

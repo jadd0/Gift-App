@@ -105,7 +105,7 @@ export class PasswordReset extends User {
 		};
 
 		transport.sendMail(mailOptions, function (err, info) {
-			console.log(err, info)
+			
 			if (err) {
 				return false;
 			}
