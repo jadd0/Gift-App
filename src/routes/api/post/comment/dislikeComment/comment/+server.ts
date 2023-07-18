@@ -3,7 +3,7 @@ import { dislikeComment } from '../../../../../../stores'
 import { authFlow } from '../../../../../../functions/auth'
 import { error } from '@sveltejs/kit';
 
-const DislikeComment = get(dislikeComment);
+const DislikeComment = get(dislikeComment)
 
 /** @type {import('./$types').Load} */
 export async function POST({ request, fetch, cookies }) {
