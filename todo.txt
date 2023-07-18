@@ -1,0 +1,9 @@
+ui:
+  landing page
+  finish login and signup
+  navbar
+  search bar
+
+backend:
+  ability to add to circles
+  

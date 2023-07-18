@@ -1,12 +1,12 @@
-export class Cookie {
-  parseCookie(cookieList: any) {
+export class Parse {
+	parseCookie(cookieList: any) {
 		const result = {};
-		let jwt = "";
+		let jwt = '';
 		try {
-			cookieList = cookieList.split("; ");
+			cookieList = cookieList.split('; ');
 
 			for (let i in cookieList) {
-				const cur = cookieList[i].split("=");
+				const cur = cookieList[i].split('=');
 				result[cur[0]] = cur[1];
 			}
 		} catch {
@@ -16,46 +16,45 @@ export class Cookie {
 		return result;
 	}
 
+	generateRandomString(length: number): string {
+		const alphNumString = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 
-	genetateToken(length, time) {
-		const alphNumString =
-			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-		// 1.5 days
-		const days = time || 129600000;
-		const expire = new Date().getTime() + days;
-		let key = "";
-
+		let key = '';
 		for (let i = 0; i < (length || 40); i++) {
-			key +=
-				alphNumString[Math.floor(Math.random() * alphNumString.length)];
+			key += alphNumString[Math.floor(Math.random() * alphNumString.length)];
 		}
 
-		key = `${expire}.${key}`;
+		return key
+	}
+
+	generateToken(length: number, time: any): string {
+		// 5 minutes
+		const ms = time || 300000;
+		const expire = new Date().getTime() + ms;
+		let key = '';
+
+		key = `${expire}.${this.generateRandomString(40)}`;
 
 		return key;
 	}
 
+	generateAccessToken(): string {
+		return (this.generateCookie(this.generateRandomString(70), 'never'))
+	}
+
 	//expires in 2 days
-	generateExpiry() {
+	generateExpiry(length) {
 		const date = new Date();
-		const days = 1.5;
+		const days = length || 1.5;
 		date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
 
 		return date;
 	}
 
-	//every request, change token
-	generateJWT(username) {
-		const data = {
-			username: username,
-			token: this.genetateToken(),
-		};
-
-		return data;
-	}
-
-	generateCookie(key) {
-		const cookie = `key=${key}; path=/; Expires=${this.generateExpiry()}; HostOnly=false; Secure=lax; httpOnly=true; SameSite=Strict;`;
+	generateCookie(key: string, expiry?: any, type?: string): string {
+		if (expiry === undefined) expiry = 2;
+		if (type === undefined) type = 'key'
+		const cookie = `${type}=${key}; path=/; Expires=${expiry == 'never' ? 'expires=Thu, 01 Jan 2038 00:00:00 UTC' : this.generateExpiry(expiry)}; HostOnly=false; Secure=lax; httpOnly=true; SameSite=Strict;`;
 
 		return cookie;
 	}
