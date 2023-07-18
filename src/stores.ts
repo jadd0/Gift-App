@@ -22,9 +22,12 @@ import { Post } from './classes/post/post';
 import { DeletePost } from './classes/post/deletePost';
 import { DislikePost } from './classes/post/likeDislike/dislikePost';
 import { LikePost } from './classes/post/likeDislike/likePost';
-import { Comment } from './classes/post/commentReply/commentReply';
-// import { Dis } from './classes/post/likeDislike/dislikePost';
-
+import { Comment } from './classes/post/comment/comment';
+import { DislikeComment } from './classes/post/comment/dislikeComment';
+import { LikeComment } from './classes/post/comment/likeComment';
+import { CommentReply } from './classes/post/commentReply/commentReply';
+import { LikeCommentReply } from './classes/post/commentReply/likeCommentReply';
+import { DislikeCommentReply } from './classes/post/commentReply/dislikeCommentReply';
 
 // INIT
 
@@ -46,6 +49,11 @@ const deletePostObj = new DeletePost(supabase)
 const dislikePostObj = new DislikePost(supabase)
 const likePostObj = new LikePost(supabase)
 const commentObj = new Comment(supabase)
+const dislikeCommentObj = new DislikeComment(supabase)
+const likeCommentObj = new LikeComment(supabase)
+const commentReplyObj = new CommentReply(supabase)
+const likeCommentReplyObj = new LikeCommentReply(supabase)
+const dislikeCommentReplyObj = new DislikeCommentReply(supabase)
 
 // OBJECTS
 
@@ -67,6 +75,11 @@ export const deletePost = writable(deletePostObj)
 export const dislikePost = writable(dislikePostObj)
 export const likePost = writable(likePostObj)
 export const comment = writable(commentObj)
+export const dislikeComment = writable(dislikeCommentObj)
+export const likeComment = writable(likeCommentObj)
+export const commentReply = writable(commentReplyObj)
+export const likeCommentReply = writable(likeCommentReplyObj)
+export const dislikeCommentReply = writable(dislikeCommentReplyObj)
 
 // ARRAYS
 

@@ -30,12 +30,34 @@ export class Post extends Circle {
   private async actualGetPost(uuid: UUID): Promise<false|PostType> {
     const { data, error } = await this.supabase
       .from('Posts')
-      .select('*, PostLikes(*), PostDislikes(*), Comments: PostComments(*, CommentLikes(*), CommentDislikes(*), PostCommentReplies(*, ReplyCommentDislikes(*), ReplyCommentLikes(*)))')
+      .select('*, PostLikes(*), PostDislikes(*), Comments: PostComments(*, CommentLikes(*), CommentDislikes(*), Replies: PostCommentReplies(*, ReplyCommentDislikes(*), ReplyCommentLikes(*)))')
       .eq('uuid', uuid)
 
     console.log(data,error)
     if (!error) return false
     return data[0]
+  }
+
+  async getCommentAndPost(commentUUID: UUID) : Promise<any> {
+    const comment = await this.getValue({
+      table: 'PostComments',
+      value: {
+        uuid: commentUUID
+      }
+    })
+
+    if (!comment) return false
+
+    const post = await this.getValue({
+      table: 'Posts',
+      value: {
+        uuid: comment.postUUID
+      }
+    })
+
+    if (!post) return false
+
+    return {comment, post}
   }
 
   async getPost(uuid: UUID, userUUID: UUID): Promise<false|PostType> {

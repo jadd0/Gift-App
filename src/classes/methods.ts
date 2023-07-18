@@ -4,9 +4,6 @@ export class SupabaseFeatures {
 		this.bcrypt = bcrypt;
 	}
 
-	// TODO refractor all code to allow for dynamic 'get'
-
-
 	async deleteData(table, column, opt) {
 		const { data, error } = await this.supabase
 			.from(table)

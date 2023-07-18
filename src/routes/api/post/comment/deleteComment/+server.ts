@@ -1,9 +1,9 @@
 import { get } from 'svelte/store';
-import { likeComment } from '../../../../../../stores'
-import { authFlow } from '../../../../../../functions/auth'
+import { comment } from '../../../../../stores'
+import { authFlow } from '../../../../../functions/auth'
 import { error } from '@sveltejs/kit';
 
-const LikeComment = get(likeComment);
+const Comment = get(comment);
 
 /** @type {import('./$types').Load} */
 export async function POST({ request, fetch, cookies }) {
@@ -14,10 +14,10 @@ export async function POST({ request, fetch, cookies }) {
 	}
 
 	const req = await request.json()
-	const res = await LikeComment.likeComment(req.postUUID, auth.uuid, req.commentUUID)
+	const res = await Comment.postComment(req.postUUID, auth.uuid, req.body)
 
 	if (!res) {
-		throw error(500, 'There has been an error whilst liking this comment. Please try again later, and if this issue persists please email me at jaddalkwork@gmail.com')
+		throw error(500, 'There has been an error whilst disliking this comment. Please try again later, and if this issue persists please email me at jaddalkwork@gmail.com')
 	}
 
 	cookies.set('key', auth.newKey, {

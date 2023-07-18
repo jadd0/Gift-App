@@ -1,4 +1,4 @@
-import { Comment } from "../commentReply/commentReply";
+import { Comment } from './comment';
 
 export class DislikeComment extends Comment {
   constructor(supabase: any) {
