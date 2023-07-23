@@ -53,7 +53,7 @@
 
 	.border {
 		position: relative;
-		bottom: -4px;
+		bottom: -6.5px;
 		height: 2px;
 		width: 100%;
 		background: rgb(90, 90, 90);
