@@ -18,12 +18,23 @@
 				alt=""
 			/>
 		</div>
-		<span id="username">{auth.username}</span>
+		<span class="username">{auth.username}</span>
 		<i class={`bx bx-chevron-down ${open ? ' closed' : ''}`} id="dropdownTag" />
     <i class={`bx bx-chevron-up ${open ? '' : 'closed'}`} id="dropdownTag" />
 	</button>
 
 	<div id="profileDD" class={`${open ? 'open' : ''} `}>
+    <div class="option title">
+      <i class='bx bx-user-circle' style='color:#787C7E' ></i>
+      <span>My stuff</span>
+    </div>
+    <a class="option">
+      <span>Profile</span>
+    </a>
+    <div class="option"></div>
+    <div class="option"></div>
+    <div class="option"></div>
+
     <div class="option">
       <button class={`holder ${open ? 'holderOpen' : ''}`} on:click={click}>
         <div id="profilePicture">
@@ -36,19 +47,25 @@
       
       <!-- <span>Add alt account</span> -->
     </div>
-    <div class="option">
-      <i class='bx bxs-cog' style='color:#ffffff' ></i>
-      <span>Settings</span>
-      
-    </div>
-    <div class="option"></div>
-    <div class="option"></div>
-    <div class="option"></div>
-
-
   </div>
 </div>
 <style>
+  .title {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+  }
+  
+  .option {
+    height: 38px;
+    width: 100%;
+    /* border-bottom: 1px solid rgb(90, 90, 90); */
+  }
+
+  
+
 	.holder {
 		width: 100%;
 		height: 38px !important;
@@ -122,23 +139,27 @@
 	span {
 		font-size: 14px;
 		color: rgb(215, 218, 220);
-    margin: 10px auto;
+    
 	}
 
-  #username {
+  .title span {
+		color: rgb(120, 124, 126);
+
+  }
+
+  .username {
     font-size: 18px !important;
 		color: rgb(215, 218, 220);
 		margin: 7px 0 0 10px;
+    /* margin: 10px auto; */
   }
 
 	#profileDD {
 		height: 100%;
 		margin: 0 auto;
 		display: none;
+    overflow: hidden;
 	}
 
-  .option {
-    height: 38px;
-    /* border-bottom: 1px solid rgb(90, 90, 90); */
-  }
+  
 </style>
