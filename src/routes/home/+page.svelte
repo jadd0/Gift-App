@@ -1,12 +1,12 @@
 <script lang="ts">
-	import Nav from '../__nav/+page.svelte';
+	import Nav from '../__newNav/+page.svelte';
 
+	export let data: any
+	console.log(data)
 </script>
 
-
-
 <body>
-	<Nav />
+	<Nav auth={data} />
 </body>
 
 
