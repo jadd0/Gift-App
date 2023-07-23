@@ -3,7 +3,6 @@
 	import Profile from './profile/+page.svelte';
 
   export let auth: any
-  console.log(auth)
 </script>
 
 <body>

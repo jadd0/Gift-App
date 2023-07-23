@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from "svelte";
+	import Input from '../__input/+page.svelte';
 	let username = "";
 	let password = "";
 	let wrong = false;
@@ -53,14 +53,8 @@
 
 <body>
 	<div id="loginForm">
-		<div class="inputHolder"class:wrong={wrong} class:shake={shake}>
-			<input type="text" class="userInput" bind:value={username} required  />
-			<span class="floatingLabel">Username</span>
-		</div>
-		<div class="inputHolder" class:wrong={wrong} class:shake={shake}>
-			<input type="text" class="userInput" bind:value={password} required  />
-			<span class="floatingLabel">Password</span>
-		</div>
+		<Input prop='Username' {wrong} {shake} bind:value={username} />
+		<Input prop='Password' {wrong} {shake} bind:value={password} />
 		
     <a href="/forgotpassword"><span>Forgotten password?</span></a>
 
@@ -70,28 +64,6 @@
 
 <style>
 	@import '/styles.css';
-
-  .shake {
-		animation: shake2 0.2s linear;
-	}
-
-	.wrong {
-		border: 2px solid red;
-	}
-
-	@keyframes shake2 {
-		25% {
-			transform: translateX(11px);
-		}
-
-		50% {
-			transform: translateX(0px);
-		}
-
-		75% {
-			transform: translateX(-11px);
-		}
-	}
 
   span {
     font-size: 15px;

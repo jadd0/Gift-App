@@ -5,6 +5,8 @@
 	export let prop: string;
 	export let value = '';
 	export let type = 'text';
+	export let shake = false
+	export let wrong = false
 
 	const handleInput = (e) => {
 		value = type.match(/^(number|range)$/) ? +e.target.value : e.target.value;
@@ -14,13 +16,35 @@
   let stylesUserInput = `width: calc(${width}${widthType} - 25px); min-height: ${height*.7}px`;
 </script>
 
-<div class="inputHolder" style={stylesInputHolder}>
+<div class="inputHolder" style={stylesInputHolder} class:shake={shake} class:wrong={wrong}>
 	<input {type} class="userInput" on:input={handleInput} style={stylesUserInput} required />
 	<span class="floatingLabel">{prop}</span>
 </div>
 
 
 <style>
+.shake {
+		animation: shake2 0.2s linear;
+	}
+
+	.wrong {
+		border: 2px solid red !important;
+	}
+
+	@keyframes shake2 {
+		25% {
+			transform: translateX(11px);
+		}
+
+		50% {
+			transform: translateX(0px);
+		}
+
+		75% {
+			transform: translateX(-11px);
+		}
+	}
+
 	.inputHolder {
 		padding-bottom: 5px;
 		margin: 0 auto;
