@@ -8,8 +8,8 @@
 <body>
 	<div id="navbar">
     <div class="container">
-      <div class="navBox">Home</div>
-      <div class="navBox">Circles</div>
+      <a href='/home' class="navBox">Home</a>
+      <a href='/circles' class="navBox">Circles</a>
     </div>
     <Search />
     <div></div>	
