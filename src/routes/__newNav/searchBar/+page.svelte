@@ -1,13 +1,25 @@
 <script lang="ts">
+	import { onMount } from "svelte";
 	export let value: any;
-  let open: boolean = false
+	let inputVar: any;
 
-	$: console.log(value);
+	
+  let open: boolean = false
+	
 
   function click() {
     open = !open
   }
+
+	function inpDot(e: KeyboardEvent) {
+		if (e.key == '.') {
+			inputVar.focus()
+		}
+	}
+	
 </script>
+
+<svelte:window on:keydown|preventDefault={inpDot} />
 
 <button class='inputHolder'>
 	<input
@@ -15,6 +27,7 @@
 		class="userInput"
 		placeholder="Search..."
 		bind:value
+		bind:this={inputVar}
 		required
 	/>
 	<div class='border' />

@@ -5,19 +5,17 @@
   export let auth: any
 </script>
 
-<body>
-	<div id="navbar">
-    <div class="container">
-      <a href='/home' class="navBox">Home</a>
-      <a href='/circles' class="navBox">Circles</a>
-    </div>
-    <Search />
-    <div></div>	
-    <div id="profile">
-      <Profile auth={auth} />
-    </div>
+<div id="navbar">
+	<div class="container">
+		<a href='/home' class="navBox">Home</a>
+		<a href='/circles' class="navBox">Circles</a>
 	</div>
-</body>
+	<Search />
+	<div></div>	
+	<div id="profile">
+		<Profile auth={auth} />
+	</div>
+</div>
 
 <style>
 	@import 'https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css';
@@ -49,6 +47,7 @@
     display: grid;
     grid-template-columns: 32.5vw 35vw 15vw 12.5vw;
     grid-template-rows: auto auto auto auto;
+		z-index: 100000;
 	}
 
   .navBox {

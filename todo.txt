@@ -6,4 +6,5 @@ ui:
 
 backend:
   ability to add to circles
-  
+
+scroll one post at a time
