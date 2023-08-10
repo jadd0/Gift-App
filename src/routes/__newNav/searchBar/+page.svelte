@@ -11,15 +11,18 @@
     open = !open
   }
 
-	function inpDot(e: KeyboardEvent) {
-		if (e.key == '.') {
-			inputVar.focus()
+	function inpDot(e: any) {
+		if (e.originalTarget.nodeName != 'INPUT') {
+			if (e.key == '.') {
+				inputVar.focus()
 		}
+		}
+		
 	}
 	
 </script>
 
-<svelte:window on:keydown|preventDefault={inpDot} />
+<svelte:window on:keydown={inpDot} />
 
 <button class='inputHolder'>
 	<input

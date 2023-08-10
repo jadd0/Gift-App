@@ -35,6 +35,28 @@
 	};
 
 	console.log(data);
+
+	let columns = Array.from({length: 20}, () => {
+		const min = 100
+		const max = 300
+
+		const randomWidth = Math.floor(Math.random() * (max - min+1)) + min
+
+		return `${randomWidth}px`
+	}).join(' ')
+
+	let columnHeights = Array.from({length: 200}, () => {
+		const min = 100
+		const max = 300
+
+		return Math.floor(Math.random() * (max - min+1)) + min
+	})
+	let columnWidths = Array.from({length: 200}, () => {
+		const min = 100
+		const max = 300
+
+		return Math.floor(Math.random() * (max - min+1)) + min, Math.floor(Math.random() * (max - min+1)) + min
+	})
 </script>
 
 <body>
@@ -43,107 +65,15 @@
 	<div id="searchHolder">
 		<Input prop="Search for circles..." />
 
-		<!-- <div class="circlesHolder">
-				{#each following as circle}
-					<div class="circle">
-						<span class="circleName">{circle.name}</span>
-					</div>
-				{/each}
-
-		</div> -->
-
 		<div class="viewport">
-			<ul>
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
-				<li />
+			<ul style={`grid-template-columns: ${columns};`}>
+				{#each columnHeights as h}
+					<!-- {#each columnWidths as w} -->
+						<li style={`height: ${h}px`}/>
+					<!-- {/each} -->
+					
+				{/each}
+				
 			</ul>
 		</div>
 	</div>
@@ -169,7 +99,7 @@
 
 	.viewport {
 		/* background-color: #f8f8f8; */
-		height: 80vh;
+		height: 75vh;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -179,18 +109,19 @@
 	ul {
 		padding: 1rem;
 		display: grid;
-		grid-template-columns: repeat(10, 150px);
-		grid-template-rows: repeat(10, 150px);
 		grid-column-gap: 1rem;
 		grid-row-gap: 1rem;
 		overflow: scroll;
-		height: 80vh;
+		height: 75vh;
 		scroll-snap-type: both mandatory;
 		scroll-snap-stop: always;
 		scroll-snap-align: center;
 		scroll-padding: 1rem;
 		-ms-overflow-style: none; 
   	scrollbar-width: none;
+		grid-template-rows: masonry;
+		
+		/* grid-gap: 1rem 3rem; */
 	}
 
 	ul::-webkit-scrollbar {
@@ -228,7 +159,7 @@
 
 	#searchHolder {
 		background: none;
-		width: 60vw;
+		width: 100vw;
 		height: 230px;
 		position: relative;
 		/* top: -50px; */

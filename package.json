@@ -23,6 +23,7 @@
 		"@supabase/supabase-js": "^2.2.2",
 		"bcryptjs": "^2.4.3",
 		"rollup-plugin-css-only": "^4.3.0",
-		"supabase": "^1.27.10"
+		"supabase": "^1.27.10",
+		"svelte-virtual-list": "^3.0.1"
 	}
 }
