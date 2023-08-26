@@ -1,14 +1,10 @@
 <script lang="ts">
 	import Nav from '../__newNav/+page.svelte';
-	import Input from '../__input/+page.svelte';
-	import { onMount } from 'svelte';
 	import InView from '../__components/isInView/+page.svelte';
 	import Viewport from './viewport.svelte';
+	import { onMount } from 'svelte';
 
 	export let data: any;
-	
-
-	
 
 	function randomWidth() {
 		const min = 100;
@@ -18,48 +14,70 @@
 
 		return `${randomWidth}px`;
 	}
-	
-	let columnHeights = Array.from({ length: 200 }, () => {
+
+	function randomWidthWithout() {
 		const min = 100;
 		const max = 400;
 
 		return Math.floor(Math.random() * (max - min + 1)) + min;
-	});
+	}
 
-	let columns: any
-	let width = 10
-	$:	columns = Array.from({ length: 10 }, randomWidth).join(' ');
+	let columnHeights
+	let columns: any;
 
-	let inView: Boolean[] = []
-	$: width += 5
+	let items = 200
 
+	let width = 10;
+	$: columns = Array.from({ length: width }, randomWidth).join(' ');
+
+
+	columnHeights = Array.from({ length: items }, randomWidthWithout);
+
+	
+	
+
+	let inView: Boolean[] = [];
+	$: width = width + 5;
+
+	let newE: any
+	$: console.log("hello")
+
+	function handleScroll() {
+		width+=5
+		console.log("hello")
+	}
+
+	onMount(() => {
+    window.addEventListener('scroll', handleScroll);
+    // return () => {
+    //   window.removeEventListener('scroll', handleScroll);
+    // };
+  });
 
 </script>
 
-
+<svelte:window bind:scrollY={newE}/>
 
 <body>
 	<Nav auth={data} />
 
 	<div id="searchHolder">
-		<Viewport bind:width>
+		 <Viewport bind:width> 
 			<div class="viewport">
-			
 				<ul style={`grid-template-columns: ${columns};`}>
-				{#each columnHeights as h, i}
+					{#each columnHeights as h, i}
 						{#if i % width == 0}
-							<InView bind:data={inView[inView.length]}>
+						
+							<InView bind:data={inView[i]}>
 								<li style={`height: ${h}px`} />
 							</InView>
-							{:else}
+						{:else}
 							<li style={`height: ${h}px`} />
 						{/if}
-						
-				{/each}
-			</ul>
-			
-			
-		</div></Viewport>
+					{/each}
+				</ul>
+			</div>
+		 </Viewport> 
 	</div>
 </body>
 
@@ -87,7 +105,7 @@
 	.viewport {
 		/* background-color: #f8f8f8; */
 		/* margin-top: 50px; */
-		height:120vh;
+		height: 120vh;
 		display: flex;
 		align-items: center;
 		justify-content: center;
