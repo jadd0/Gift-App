@@ -6,62 +6,21 @@
 
 	export let data: any;
 
-	function randomWidth() {
-		const min = 100;
-		const max = 400;
-
-		const randomWidth = Math.floor(Math.random() * (max - min + 1)) + min;
-
-		return `${randomWidth}px`;
-	}
-
-	function randomWidthWithout() {
-		const min = 100;
-		const max = 400;
-
-		return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
-
-	let columnHeights
-	let columns: any;
-
-	let items = 200
-
-	let width = 10;
-	$: columns = Array.from({ length: width }, randomWidth).join(' ');
-
-
-	columnHeights = Array.from({ length: items }, randomWidthWithout);
-
-	
-	
-
-	let inView: Boolean[] = [];
-	$: width = width + 5;
-
-	let newE: any
-	$: console.log("hello")
-
-	function handleScroll() {
-		width+=5
-		console.log("hello")
-	}
-
-	onMount(() => {
-    window.addEventListener('scroll', handleScroll);
-    // return () => {
-    //   window.removeEventListener('scroll', handleScroll);
-    // };
-  });
+	let d = [1,2,3,4,5,6,7,8,9,10,11,12]
 
 </script>
-
-<svelte:window bind:scrollY={newE}/>
 
 <body>
 	<Nav auth={data} />
 
-	
+	<div class="support-scrollsnap"></div>
+
+<div class="scroll-container">
+	{#each d as d}
+		<div class="scroll-area">{d}</div>
+	{/each}
+</div>
+
 </body>
 
 <style>
@@ -69,8 +28,54 @@
 
 	body {
 		height: 89vh !important;
-		overflow: hidden;
+		/* overflow: hidden; */
 	}
 
 	
+.scroll-container,
+.scroll-area {
+  max-width: 850px;
+  height: 600px;
+  font-size: 60px;
+}
+
+.scroll-container {
+  overflow: auto;
+  -webkit-scroll-snap-type: y mandatory;
+      -ms-scroll-snap-type: y mandatory;
+          scroll-snap-type: y mandatory;
+}
+
+.scroll-area {
+  scroll-snap-align: start;
+}
+
+.scroll-container,
+.scroll-area {
+  margin: 0 auto;
+}
+
+.scroll-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.scroll-area:nth-of-type(1) {
+  background: #49b293;
+}
+
+.scroll-area:nth-of-type(2) {
+  background: #c94e4b;
+}
+
+.scroll-area:nth-of-type(3) {
+  background: #4cc1be;
+}
+
+.scroll-area:nth-of-type(4) {
+  background: #8360A6;
+}
+
 </style>
