@@ -1,93 +1,88 @@
 <script lang="ts">
 	import Nav from '../__newNav/+page.svelte';
-	import InView from '../__components/isInView/+page.svelte';
-	import Viewport from './viewport.svelte';
-	import { onMount } from 'svelte';
+	import Input from '../__input/+page.svelte';
+	import { onMount } from 'svelte'
 
 	export let data: any;
+	export let following: CircleType[] = [
+		{
+			name: 'one',
+		},
+		{
+			name: 'two',
+		},
+		{
+			name: 'three',
+		},
+		{
+			name: 'four',
+		},
+		{
+			name: 'five',
+		},
+		{
+			name: 'six',
+		},
+	];
+	export let recommended: CircleType[] = [];
 
-	function randomWidth() {
-		const min = 100;
-		const max = 400;
+	let open: Boolean = false;
 
-		const randomWidth = Math.floor(Math.random() * (max - min + 1)) + min;
+	let search;
 
-		return `${randomWidth}px`;
-	}
+	const openFn = () => {
+		open = !open;
+	};
 
-	function randomWidthWithout() {
-		const min = 100;
-		const max = 400;
+	console.log(data);
 
-		return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
+	let columns = Array.from({length: 20}, () => {
+		const min = 100
+		const max = 300
 
-	let columnHeights
-	let columns: any;
+		const randomWidth = Math.floor(Math.random() * (max - min+1)) + min
 
-	let items = 200
+		return `${randomWidth}px`
+	}).join(' ')
 
-	let width = 10;
-	$: columns = Array.from({ length: width }, randomWidth).join(' ');
+	let columnHeights = Array.from({length: 200}, () => {
+		const min = 100
+		const max = 300
 
+		return Math.floor(Math.random() * (max - min+1)) + min
+	})
+	let columnWidths = Array.from({length: 200}, () => {
+		const min = 100
+		const max = 300
 
-	columnHeights = Array.from({ length: items }, randomWidthWithout);
-
-	
-	
-
-	let inView: Boolean[] = [];
-	$: width = width + 5;
-
-	let newE: any
-	$: console.log("hello")
-
-	function handleScroll() {
-		width+=5
-		console.log("hello")
-	}
-
-	onMount(() => {
-    window.addEventListener('scroll', handleScroll);
-    // return () => {
-    //   window.removeEventListener('scroll', handleScroll);
-    // };
-  });
-
+		return Math.floor(Math.random() * (max - min+1)) + min, Math.floor(Math.random() * (max - min+1)) + min
+	})
 </script>
-
-<svelte:window bind:scrollY={newE}/>
 
 <body>
 	<Nav auth={data} />
 
 	<div id="searchHolder">
-		 <Viewport bind:width> 
-			<div class="viewport">
-				<ul style={`grid-template-columns: ${columns};`}>
-					{#each columnHeights as h, i}
-						{#if i % width == 0}
-						
-							<InView bind:data={inView[i]}>
-								<li style={`height: ${h}px`} />
-							</InView>
-						{:else}
-							<li style={`height: ${h}px`} />
-						{/if}
-					{/each}
-				</ul>
-			</div>
-		 </Viewport> 
+		<Input prop="Search for circles..." />
+
+		<div class="viewport">
+			<ul style={`grid-template-columns: ${columns};`}>
+				{#each columnHeights as h}
+					<!-- {#each columnWidths as w} -->
+						<li style={`height: ${h}px`}/>
+					<!-- {/each} -->
+					
+				{/each}
+				
+			</ul>
+		</div>
 	</div>
+
+	
 </body>
 
 <style>
 	@import '/styles.css';
-
-	body {
-		height: 89vh !important;
-		overflow: hidden;
-	}
 
 	.coverOpen {
 		display: none;
@@ -104,12 +99,12 @@
 
 	.viewport {
 		/* background-color: #f8f8f8; */
-		/* margin-top: 50px; */
-		height: 120vh;
+		height: 75vh;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
+
 
 	ul {
 		padding: 1rem;
@@ -117,21 +112,21 @@
 		grid-column-gap: 1rem;
 		grid-row-gap: 1rem;
 		overflow: scroll;
-		height: 120vh;
+		height: 75vh;
 		scroll-snap-type: both mandatory;
 		scroll-snap-stop: always;
 		scroll-snap-align: center;
 		scroll-padding: 1rem;
-		-ms-overflow-style: none;
-		scrollbar-width: none;
+		-ms-overflow-style: none; 
+  	scrollbar-width: none;
 		grid-template-rows: masonry;
-
+		
 		/* grid-gap: 1rem 3rem; */
 	}
 
 	ul::-webkit-scrollbar {
-		display: none;
-	}
+  display: none;
+}
 
 	li {
 		scroll-snap-align: center;
