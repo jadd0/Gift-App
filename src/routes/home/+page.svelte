@@ -6,20 +6,27 @@
 
 	export let data: any;
 
-	let d = [1,2,3,4,5,6,7,8,9,10,11,12]
+	let id = []
+	for (let i = 0; i < 200; i++) {
+				id.push(Math.floor(Math.random() * 10))
+			}
+	console.log(id)
+	onMount(() => {
+		
+	})
 
 </script>
 
 <body>
 	<Nav auth={data} />
 
-	<div class="support-scrollsnap"></div>
+		<div class="scroll-container">
+		{#each id as src}
+			<img src={`img/${src}.jpg`} alt="">
+		{/each}
+	</div>
 
-<div class="scroll-container">
-	{#each d as d}
-		<div class="scroll-area">{d}</div>
-	{/each}
-</div>
+	
 
 </body>
 
@@ -31,35 +38,23 @@
 		/* overflow: hidden; */
 	}
 
-	
-.scroll-container,
-.scroll-area {
-  max-width: 850px;
-  height: 89vh;
-  font-size: 60px;
-}
+	img {
+		width: 236px;
+		height: auto;
+		border-radius: 15px;
+	}
 
-.scroll-container {
-  overflow: auto;
-  -webkit-scroll-snap-type: y mandatory;
-  -ms-scroll-snap-type: y mandatory;
-	scroll-snap-type: y mandatory;
-}
+	.largeContainer {
+		width: 100vw;
+		height: 100vw;
+		/* padding: 0 10vw; */
+	}
 
-.scroll-area {
-  scroll-snap-align: start;
-}
-
-.scroll-container,
-.scroll-area {
-  margin: 0 auto;
-}
-
-.scroll-area {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-}
-
+	.scroll-container {
+		display: grid;
+		gap: 15px;
+		grid-template-columns: repeat(auto-fill, minmax(236px, 236px));
+		grid-template-rows: masonry;
+		place-content: center;
+	}
 </style>
